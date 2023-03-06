@@ -1,6 +1,4 @@
-# CodeIgniter-Crud-with-AJAX
-CodeIgniter CRUD Application using AJAX and DataTables
-
+# BASIC STOCK TRACKING
 
 In this Code Sample I’m using several framework and library:
 
@@ -15,4 +13,5 @@ Steps:
 2-Unzip it and place it on your xamp pr wamp.
 3-Create Database "ajax_ci_crud" in your PhpMyAdmin.
 4-Import the sql file into the Database you can find in the  zip file you download from here.
-5-Run your app and enjoy.
+5-Change the base_url at 'application -> config -> config.php'
+6-Run your app and enjoy.
