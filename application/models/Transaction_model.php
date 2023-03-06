@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Person_model extends CI_Model {
+class Transaction_model extends CI_Model {
 
-	var $table = 'Customer';
-	var $column = array('Name','Surname','Phone','Email');
+	var $table = 'Transaction';
+	var $column = array('DateTime','CustomerId','ProductId','Direction','Amount');
 	var $order = array('id' => 'desc');
 
 	public function __construct()
@@ -15,8 +15,12 @@ class Person_model extends CI_Model {
 
 	private function _get_datatables_query()
 	{
-		
+		$this->db->select("Transaction.*, Product.*, Product.Name AS ProductName, Customer.Name AS CustomerName, Customer.Surname AS CustomerSurname,
+							Customer.id AS CustomerId, Product.id AS ProductId, IF(Transaction.Direction=-1,'Satış','Alış') AS Direction,
+							Transaction.id AS TransactionId");
 		$this->db->from($this->table);
+		$this->db->join('Product', 'Transaction.ProductId = Product.Id');
+		$this->db->join('Customer', 'Transaction.CustomerId = Customer.Id');
 
 		$i = 0;
 	
@@ -63,8 +67,13 @@ class Person_model extends CI_Model {
 
 	public function get_by_id($id)
 	{
+		$this->db->select("Transaction.*, Product.*, Product.Name AS ProductName, Customer.Name AS CustomerName, Customer.Surname AS CustomerSurname,
+							Customer.id AS CustomerId, Product.id AS ProductId, IF(Transaction.Direction=-1,'Satış','Alış') AS Direction,
+							Transaction.Direction AS DirectionId, Transaction.id AS TransactionId");
 		$this->db->from($this->table);
-		$this->db->where('id',$id);
+		$this->db->join('Product', 'Transaction.ProductId = Product.Id');
+		$this->db->join('Customer', 'Transaction.CustomerId = Customer.Id');
+		$this->db->where('Transaction.id',$id);
 		$query = $this->db->get();
 
 		return $query->row();
@@ -87,5 +96,6 @@ class Person_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->delete($this->table);
 	}
+
 
 }

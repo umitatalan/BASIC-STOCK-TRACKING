@@ -12,7 +12,9 @@ class Person extends CI_Controller {
 	public function index()
 	{
 		$this->load->helper('url');
+		$this->load->view('templates/header');
 		$this->load->view('person_view');
+		$this->load->view('templates/footer');
 	}
 
 	public function ajax_list()
@@ -24,15 +26,19 @@ class Person extends CI_Controller {
 		{
 			$no++;
 			$row = array();
-			$row[] = $person->firstName;
-			$row[] = $person->lastName;
-			$row[] = $person->gender;
-			$row[] = $person->address;
-			$row[] = $person->dob;
+
+			if (isset($_POST['withid'])){
+				$row[] = $person->id;
+			}
+
+			$row[] = $person->Name;
+			$row[] = $person->Surname;
+			$row[] = $person->Phone;
+			$row[] = $person->Email;
 
 			//add html for action
-			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void()" title="Edit" onclick="edit_person('."'".$person->id."'".')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-				  <a class="btn btn-sm btn-danger" href="javascript:void()" title="Hapus" onclick="delete_person('."'".$person->id."'".')"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void()" title="Düzenle" onclick="edit_person('."'".$person->id."'".')"><i class="glyphicon glyphicon-pencil"></i> Düzenle</a>
+				  <a class="btn btn-sm btn-danger" href="javascript:void()" title="Sil" onclick="delete_person('."'".$person->id."'".')"><i class="glyphicon glyphicon-trash"></i> Sil</a>';
 		
 			$data[] = $row;
 		}
@@ -56,11 +62,10 @@ class Person extends CI_Controller {
 	public function ajax_add()
 	{
 		$data = array(
-				'firstName' => $this->input->post('firstName'),
-				'lastName' => $this->input->post('lastName'),
-				'gender' => $this->input->post('gender'),
-				'address' => $this->input->post('address'),
-				'dob' => $this->input->post('dob'),
+				'Name' => $this->input->post('Name'),
+				'Surname' => $this->input->post('Surname'),
+				'Phone' => $this->input->post('Phone'),
+				'Email' => $this->input->post('Email')
 			);
 		$insert = $this->person->save($data);
 		echo json_encode(array("status" => TRUE));
@@ -69,11 +74,10 @@ class Person extends CI_Controller {
 	public function ajax_update()
 	{
 		$data = array(
-				'firstName' => $this->input->post('firstName'),
-				'lastName' => $this->input->post('lastName'),
-				'gender' => $this->input->post('gender'),
-				'address' => $this->input->post('address'),
-				'dob' => $this->input->post('dob'),
+				'Name' => $this->input->post('Name'),
+				'Surname' => $this->input->post('Surname'),
+				'Phone' => $this->input->post('Phone'),
+				'Email' => $this->input->post('Email')
 			);
 		$this->person->update(array('id' => $this->input->post('id')), $data);
 		echo json_encode(array("status" => TRUE));
@@ -84,5 +88,4 @@ class Person extends CI_Controller {
 		$this->person->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
-
 }

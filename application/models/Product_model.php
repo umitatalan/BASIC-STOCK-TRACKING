@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Person_model extends CI_Model {
+class Product_model extends CI_Model {
 
-	var $table = 'Customer';
-	var $column = array('Name','Surname','Phone','Email');
+	var $table = 'Product';
+	var $column = array('Name','Balance');
 	var $order = array('id' => 'desc');
 
 	public function __construct()
@@ -87,5 +87,6 @@ class Person_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->delete($this->table);
 	}
+
 
 }
